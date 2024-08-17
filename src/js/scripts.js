@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+//import {GUI} from 'dat.gui';
 import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer';
 import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass';
 import {UnrealBloomPass} from 'three/examples/jsm/postprocessing/UnrealBloomPass';
@@ -7,6 +8,7 @@ import {OutputPass} from 'three/examples/jsm/postprocessing/OutputPass';
 const renderer = new THREE.WebGLRenderer({antialias: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+//renderer.setClearColor(0x222222);
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -33,6 +35,7 @@ const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, windo
 bloomPass.threshold = params.threshold;
 bloomPass.strength = params.strength;
 bloomPass.radius = params.radius;
+
 
 const bloomComposer = new EffectComposer(renderer);
 bloomComposer.addPass(renderScene);
@@ -68,32 +71,37 @@ camera.add(listener);
 
 const sound = new THREE.Audio(listener);
 
-const songs = [
-    './assets/Beats_1.mp3',
-    './assets/Beats_2.mp3',
-    './assets/Beats_3.mp3',
-    './assets/Beats_4.mp3',
-    './assets/Beats_5.mp3'
-];
-
-let currentSongIndex = 0;
-
-function playRandomSong() {
-    currentSongIndex = Math.floor(Math.random() * songs.length);
-    const audioLoader = new THREE.AudioLoader();
-    audioLoader.load(songs[currentSongIndex], function(buffer) {
-        sound.setBuffer(buffer);
-        sound.play();
-    });
-}
-
-sound.onEnded = function() {
-    playRandomSong();
-};
-
-playRandomSong();
+const audioLoader = new THREE.AudioLoader();
+audioLoader.load('./assets/Beats.mp3', function(buffer) {
+	sound.setBuffer(buffer);
+	sound.play();
+});
 
 const analyser = new THREE.AudioAnalyser(sound, 32);
+
+/*const gui = new GUI();
+
+const colorsFolder = gui.addFolder('Colors');
+colorsFolder.add(params, 'red', 0, 1).onChange(function(value) {
+	uniforms.u_red.value = Number(value);
+});
+colorsFolder.add(params, 'green', 0, 1).onChange(function(value) {
+	uniforms.u_green.value = Number(value);
+});
+colorsFolder.add(params, 'blue', 0, 1).onChange(function(value) {
+	uniforms.u_blue.value = Number(value);
+});
+
+const bloomFolder = gui.addFolder('Bloom');
+bloomFolder.add(params, 'threshold', 0, 1).onChange(function(value) {
+	bloomPass.threshold = Number(value);
+});
+bloomFolder.add(params, 'strength', 0, 3).onChange(function(value) {
+	bloomPass.strength = Number(value);
+});
+bloomFolder.add(params, 'radius', 0, 1).onChange(function(value) {
+	bloomPass.radius = Number(value);
+});*/
 
 let mouseX = 0;
 let mouseY = 0;
