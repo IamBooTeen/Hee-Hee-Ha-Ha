@@ -100,6 +100,7 @@ playButton.style.backgroundColor = 'transparent';
 playButton.style.border = 'none';
 playButton.style.cursor = 'pointer';
 playButton.style.zIndex = '1000'; // Ensure it's in front of everything else
+playButton.style.outline = 'none'; // Remove focus outline
 document.body.appendChild(playButton);
 
 // Create Pause Button (Rounded Sticks)
@@ -119,16 +120,23 @@ pauseButton.style.border = 'none';
 pauseButton.style.cursor = 'pointer';
 pauseButton.style.zIndex = '1000'; // Ensure it's in front of everything else
 pauseButton.style.display = 'none'; // Initially hidden
+pauseButton.style.outline = 'none'; // Remove focus outline
 document.body.appendChild(pauseButton);
 
 let isPlaying = true;
 
 playButton.addEventListener('click', () => {
     sound.play();
-    isPlaying = true;
-    playButton.style.display = 'none';
-    pauseButton.style.display = 'inline';
-    requestAnimationFrame(animate); // Resume animation
+
+    // Wait a short time before checking if the sound is playing
+    setTimeout(() => {
+        if (sound.isPlaying) {
+            isPlaying = true;
+            playButton.style.display = 'none';
+            pauseButton.style.display = 'inline';
+            requestAnimationFrame(animate); // Resume animation
+        }
+    }, 100); // Check after 100ms to give time for the audio to start
 });
 
 pauseButton.addEventListener('click', () => {
