@@ -85,79 +85,15 @@ document.addEventListener('mousemove', function(e) {
     mouseY = (e.clientY - windowHalfY) / 100;
 });
 
-// Create Play Button (Triangle with Rounded Corners)
-const playButton = document.createElement('button');
-playButton.innerHTML = `
-    <svg width="100" height="100" viewBox="0 0 100 100">
-        <polygon points="30,20 80,50 30,80" fill="black" stroke="black" stroke-width="5" stroke-linejoin="round"/>
-    </svg>`;
-playButton.style.position = 'absolute';
-playButton.style.top = '50%';
-playButton.style.left = '50%';
-playButton.style.transform = 'translate(-50%, -50%)';
-playButton.style.padding = '0';
-playButton.style.backgroundColor = 'transparent';
-playButton.style.border = 'none';
-playButton.style.cursor = 'pointer';
-playButton.style.zIndex = '1000'; // Ensure it's in front of everything else
-playButton.style.outline = 'none'; // Remove focus outline
-document.body.appendChild(playButton);
-
-// Create Pause Button (Rounded Sticks)
-const pauseButton = document.createElement('button');
-pauseButton.innerHTML = `
-    <svg width="100" height="100" viewBox="0 0 100 100">
-        <rect x="30" y="20" width="15" height="60" fill="black" rx="8" ry="8"/>
-        <rect x="55" y="20" width="15" height="60" fill="black" rx="8" ry="8"/>
-    </svg>`;
-pauseButton.style.position = 'absolute';
-pauseButton.style.top = '50%';
-pauseButton.style.left = '50%';
-pauseButton.style.transform = 'translate(-50%, -50%)';
-pauseButton.style.padding = '0';
-pauseButton.style.backgroundColor = 'transparent';
-pauseButton.style.border = 'none';
-pauseButton.style.cursor = 'pointer';
-pauseButton.style.zIndex = '1000'; // Ensure it's in front of everything else
-pauseButton.style.display = 'none'; // Initially hidden
-pauseButton.style.outline = 'none'; // Remove focus outline
-document.body.appendChild(pauseButton);
-
-let isPlaying = true;
-
-playButton.addEventListener('click', () => {
-    sound.play();
-
-    // Wait a short time before checking if the sound is playing
-    setTimeout(() => {
-        if (sound.isPlaying) {
-            isPlaying = true;
-            playButton.style.display = 'none';
-            pauseButton.style.display = 'inline';
-            requestAnimationFrame(animate); // Resume animation
-        }
-    }, 100); // Check after 100ms to give time for the audio to start
-});
-
-pauseButton.addEventListener('click', () => {
-    sound.pause();
-    isPlaying = false;
-    playButton.style.display = 'inline';
-    pauseButton.style.display = 'none';
-    cancelAnimationFrame(animate); // Stop animation
-});
-
 const clock = new THREE.Clock();
 function animate() {
-    if (isPlaying) {
-        camera.position.x += (mouseX - camera.position.x) * .05;
-        camera.position.y += (-mouseY - camera.position.y) * 0.5;
-        camera.lookAt(scene.position);
-        uniforms.u_time.value = clock.getElapsedTime();
-        uniforms.u_frequency.value = analyser.getAverageFrequency();
-        bloomComposer.render();
-        requestAnimationFrame(animate);
-    }
+    camera.position.x += (mouseX - camera.position.x) * .05;
+    camera.position.y += (-mouseY - camera.position.y) * 0.5;
+    camera.lookAt(scene.position);
+    uniforms.u_time.value = clock.getElapsedTime();
+    uniforms.u_frequency.value = analyser.getAverageFrequency();
+    bloomComposer.render();
+    requestAnimationFrame(animate);
 }
 animate();
 
