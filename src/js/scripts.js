@@ -85,11 +85,11 @@ document.addEventListener('mousemove', function(e) {
     mouseY = (e.clientY - windowHalfY) / 100;
 });
 
-// Create Play Button (Triangle)
+// Create Play Button (Triangle with Rounded Corners)
 const playButton = document.createElement('button');
 playButton.innerHTML = `
-    <svg width="150" height="150" viewBox="0 0 100 100">
-        <polygon points="30,20 80,50 30,80" fill="black"/>
+    <svg width="100" height="100" viewBox="0 0 100 100">
+        <polygon points="30,20 80,50 30,80" fill="black" stroke="black" stroke-width="5" stroke-linejoin="round"/>
     </svg>`;
 playButton.style.position = 'absolute';
 playButton.style.top = '50%';
@@ -102,12 +102,12 @@ playButton.style.cursor = 'pointer';
 playButton.style.zIndex = '1000'; // Ensure it's in front of everything else
 document.body.appendChild(playButton);
 
-// Create Pause Button (Two Sticks)
+// Create Pause Button (Rounded Sticks)
 const pauseButton = document.createElement('button');
 pauseButton.innerHTML = `
-    <svg width="150" height="150" viewBox="0 0 100 100">
-        <rect x="30" y="20" width="15" height="60" fill="black"/>
-        <rect x="55" y="20" width="15" height="60" fill="black"/>
+    <svg width="100" height="100" viewBox="0 0 100 100">
+        <rect x="30" y="20" width="15" height="60" fill="black" rx="8" ry="8"/>
+        <rect x="55" y="20" width="15" height="60" fill="black" rx="8" ry="8"/>
     </svg>`;
 pauseButton.style.position = 'absolute';
 pauseButton.style.top = '50%';
