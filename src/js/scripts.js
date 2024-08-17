@@ -61,7 +61,7 @@ const mat = new THREE.ShaderMaterial({
 	fragmentShader: document.getElementById('fragmentshader').textContent
 });
 
-const geo = new THREE.IcosahedronGeometry(4, 100 );
+const geo = new THREE.IcosahedronGeometry(3, 100 );
 const mesh = new THREE.Mesh(geo, mat);
 scene.add(mesh);
 mesh.material.wireframe = true;
