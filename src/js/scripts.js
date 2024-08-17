@@ -71,7 +71,7 @@ const sound = new THREE.Audio(listener);
 const audioLoader = new THREE.AudioLoader();
 audioLoader.load('./assets/Beats.mp3', function(buffer) {
     sound.setBuffer(buffer);
-    // Don't play the sound automatically here
+    sound.play();
 });
 
 const analyser = new THREE.AudioAnalyser(sound, 32);
@@ -123,26 +123,28 @@ pauseButton.style.display = 'none'; // Initially hidden
 pauseButton.style.outline = 'none'; // Remove focus outline
 document.body.appendChild(pauseButton);
 
-let isPlaying = false;
+let isPlaying = true;
 
 playButton.addEventListener('click', () => {
-    if (!isPlaying && sound.buffer) {
-        sound.play();
-        isPlaying = true;
-        playButton.style.display = 'none';
-        pauseButton.style.display = 'inline';
-        requestAnimationFrame(animate); // Resume animation
-    }
+    sound.play();
+
+    // Wait a short time before checking if the sound is playing
+    setTimeout(() => {
+        if (sound.isPlaying) {
+            isPlaying = true;
+            playButton.style.display = 'none';
+            pauseButton.style.display = 'inline';
+            requestAnimationFrame(animate); // Resume animation
+        }
+    }, 100); // Check after 100ms to give time for the audio to start
 });
 
 pauseButton.addEventListener('click', () => {
-    if (isPlaying) {
-        sound.pause();
-        isPlaying = false;
-        playButton.style.display = 'inline';
-        pauseButton.style.display = 'none';
-        cancelAnimationFrame(animate); // Stop animation
-    }
+    sound.pause();
+    isPlaying = false;
+    playButton.style.display = 'inline';
+    pauseButton.style.display = 'none';
+    cancelAnimationFrame(animate); // Stop animation
 });
 
 const clock = new THREE.Clock();
