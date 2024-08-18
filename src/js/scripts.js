@@ -12,7 +12,7 @@ document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
-	45,
+	75,
 	window.innerWidth / window.innerHeight,
 	0.1,
 	1000
@@ -61,7 +61,7 @@ const mat = new THREE.ShaderMaterial({
 	fragmentShader: document.getElementById('fragmentshader').textContent
 });
 
-const geo = new THREE.IcosahedronGeometry(2, 100 );
+const geo = new THREE.IcosahedronGeometry(2, 1 );
 const mesh = new THREE.Mesh(geo, mat);
 scene.add(mesh);
 mesh.material.wireframe = true;
